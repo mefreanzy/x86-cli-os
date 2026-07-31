@@ -27,4 +27,10 @@ GDTData:
     db 0xCF
     db 0x00
 
+GTDEnd:
+GDTDescriptor:
+    dw GDTEnd - GDT - 1
+    dd GDT
+
+
 jmp $
