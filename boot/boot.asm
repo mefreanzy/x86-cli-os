@@ -7,9 +7,9 @@ _start:
     mov sp, 0x7C00
 
     mov ah, 0x0e 
-    mov al, 'H'
+    mov al, 'S'
     int 0x10
-    mov al, 'I'
+    mov al, '1'
     int 0x10
 
     mov ah, 0x42 
