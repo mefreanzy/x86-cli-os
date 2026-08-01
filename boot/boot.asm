@@ -1,43 +1,56 @@
 [org 0x7c00]
+bits 16
 
-_start:
+start:
+
     xor ax, ax
     mov ds, ax
+    mov es, ax
     mov ss, ax
-    mov sp, 0x7C00
+    mov sp, 0x7c00
 
-    mov ah, 0x0e 
-    mov al, 'S'
-    int 0x10
-    mov al, '1'
+
+    mov ah,0x0e
+    mov al,'1'
     int 0x10
 
-    mov ah, 0x42 
-    mov si, DAPACK
+
+    mov ah,0x42
+    mov si,DAPACK
     int 0x13
 
-jc DiskError
+    jc disk_error
 
-jmp 0x0000:0x1000
 
-DiskError:
-    mov ah, 0x0e
-    mov al, 'E'
+    jmp 0x0000:0x1000
+
+
+
+disk_error:
+
+    mov ah,0x0e
+    mov al,'E'
     int 0x10
-End:
-    cli
+
+hang:
     hlt
-    jmp End
+    jmp hang
 
-align 4
+
+
 DAPACK:
-	db	0x10
-	db	0
-    dw	8
-    dw	0x1000
-    dw	0x0000
-    dq	1
+
+db 0x10
+db 0
+
+dw 8              ; stage2 sektör sayısı
+
+dw 0x1000         ; offset
+dw 0x0000         ; segment
+
+dq 1              ; LBA 1
 
 
-times 510 - ($ - $$) db 0
+
+times 510-($-$$) db 0
 dw 0xaa55
